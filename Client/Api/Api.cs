@@ -39,11 +39,15 @@ namespace Client.Api
         /// </summary>
         /// <param name="">TODO</param>
         /// <returns>true if request was successful and false if unsuccessful</returns>
-        public static ReturnDto Download(string filename, string password)
+        public static string Download(string filename, string password)
         {
-            FileDto file = new FileDto(filename, password);
+            FileDto file = new FileDto(filename, password, false);
             ReturnDto returnDto = SendRequest(file);
-            return returnDto;
+            if(returnDto.Data != null)
+            {
+                File.WriteAllBytes($"..\\Downloads\\{returnDto.Filename}", returnDto.Data);
+            }
+            return returnDto.Message;
         }
 
         /// <summary>
@@ -51,11 +55,18 @@ namespace Client.Api
         /// </summary>
         /// <param name="">TODO</param>
         /// <returns>true if request was successful and false if unsuccessful</returns>
-        public static ReturnDto Upload(string fullName, string password, double expiration, int maxDownloads)
+        public static string Upload(string fullName, string password, double expiration, int maxDownloads)
         {
-            FileDto file = new FileDto(fullName, password, expiration, maxDownloads);
+            FileDto file = new FileDto(fullName, password, false, expiration, maxDownloads);
             ReturnDto returnDto = SendRequest(file);
-            return returnDto;
+            return returnDto.Message;
+        }
+
+        public static string View(string filename, string password)
+        {
+            FileDto file = new FileDto(filename, password, true);
+            ReturnDto returnDto = SendRequest(file);
+            return returnDto.Message;
         }
     }
 }

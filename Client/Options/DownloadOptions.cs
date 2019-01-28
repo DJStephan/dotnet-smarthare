@@ -1,4 +1,5 @@
 using System;
+using Client.Dtos;
 using CommandLine;
 
 namespace Client.Verbs
@@ -15,6 +16,8 @@ namespace Client.Verbs
         public static int ExecuteDownloadAndReturnExitCode(DownloadOptions options)
         {
             Console.WriteLine(options.FileName);
+            string success = Api.Api.Download(options.FileName, options.Password);
+            Console.WriteLine(success);
             return 0;
         }
     }

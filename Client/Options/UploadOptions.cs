@@ -32,7 +32,7 @@ namespace Client.Verbs
             Console.WriteLine($"Uploading {file.FullName}");
             Console.WriteLine($"Password: {options.Password}");
             var success = Api.Api.Upload(file.FullName, options.Password, options.Expiration, options.MaxDownloads);
-            Console.WriteLine(success.Message);
+            Console.WriteLine(success);
             return 0;
         }
     }

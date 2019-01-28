@@ -21,32 +21,25 @@ namespace Server.ClientHandler
             ReturnDto returnDto = new ReturnDto(false, "Something went really wrong");
             using (NetworkStream stream = client.GetStream())
             {
-                Console.WriteLine("1");
                 XmlSerializer reader = new XmlSerializer(typeof(FileDto));
-                Console.WriteLine("2");
-
                 FileDto file = (FileDto)reader.Deserialize(stream);
-                Console.WriteLine("3");
 
                 using (SmartShareContext db = new SmartShareContext())
                 {
-                    Console.WriteLine("4");
-
                     Dao dao = new Dao(db, file);
-                    Console.WriteLine("5");
-
 
                     if (file.Data != null)
                     {
-                        Console.WriteLine("6");
-
                         returnDto = dao.Upload();
+                    }
+                    else if(file.View)
+                    {
+                        returnDto = dao.View();
                     }
                     else
                     {
-                        //returnDto = dao.Download();
+                        returnDto = dao.Download();
                     }
-
                 }
 
                 XmlSerializer serializer = new XmlSerializer(typeof(ReturnDto));
